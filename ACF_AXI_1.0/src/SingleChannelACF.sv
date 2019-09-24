@@ -121,7 +121,7 @@ end //end always
 
 
 //Instantiate Edge Detector
-edge_detect  edgeDetect (
+edgeDetector edgeDetect (
                     .async_sig(CH_In),
                     .clk(CLK),
                     .CE(CE),

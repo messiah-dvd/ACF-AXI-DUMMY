@@ -4,7 +4,9 @@
 	module ACF_AXI_v1_0 #
 	(
 		// Users to add parameters here
-
+        parameter integer BIN_SIZE = 8,
+        parameter integer NUM_BINS = 20,
+        parameter integer CNTR_SIZE = 32,
 		// User parameters ends
 		// Do not modify the parameters beyond this line
 
@@ -15,7 +17,12 @@
 	)
 	(
 		// Users to add ports here
-
+		input wire CLK,
+		input wire rst,
+		input wire CE,
+        input wire CH_In,
+		input wire initTX,
+		input wire [CNTR_SIZE-1:0] presentTime,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -43,10 +50,14 @@
 		output wire  s00_axi_rvalid,
 		input wire  s00_axi_rready
 	);
+	wire [NUM_BINS+33-1:0] acfEl;
+	wire wrEn;
+	
 // Instantiation of Axi Bus Interface S00_AXI
 	ACF_AXI_v1_0_S00_AXI # ( 
 		.C_S_AXI_DATA_WIDTH(C_S00_AXI_DATA_WIDTH),
-		.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
+		.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH),
+		.NUM_BINS(NUM_BINS)
 	) ACF_AXI_v1_0_S00_AXI_inst (
 		.S_AXI_ACLK(s00_axi_aclk),
 		.S_AXI_ARESETN(s00_axi_aresetn),
@@ -68,11 +79,25 @@
 		.S_AXI_RDATA(s00_axi_rdata),
 		.S_AXI_RRESP(s00_axi_rresp),
 		.S_AXI_RVALID(s00_axi_rvalid),
-		.S_AXI_RREADY(s00_axi_rready)
+		.S_AXI_RREADY(s00_axi_rready),
+		.acfEl(acfEl),
+		.wrEn(wrEn)
 	);
-
+    
+    wire [NUM_BINS+33-1:0] acfOut;
 	// Add user logic here
-
+    SingleChannelACF #(.BIN_SIZE(BIN_SIZE), .NUM_BINS(NUM_BINS), .CNTR_SIZE(CNTR_SIZE)) acf (
+        .CLK(CLK),
+        .rst(rst),
+        .CE(CE),
+        .CH_In(CH_In),
+        .initTX(initTX),
+        .presentTime({CNTR_SIZE{1'b0}}),
+        .acfEl(acfOut), // change back to acfEl
+        .wrEn(wrEn)
+    );
+    
+    assign acfEl = {{NUM_BINS{1'b0}},33'hA2} & {NUM_BINS+33{CE}};
 	// User logic ends
 
 	endmodule
