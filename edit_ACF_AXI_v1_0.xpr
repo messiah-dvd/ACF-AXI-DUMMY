@@ -26,7 +26,6 @@
     <Option Name="IPRepoPath" Val="$PPRDIR/ACF_AXI_1.0"/>
     <Option Name="IPRepoPath" Val="$PPRDIR/../Single_Channel_ACF_AXI_1.0"/>
     <Option Name="IPRepoPath" Val="$PPRDIR/../test_wrapper_1.0"/>
-    <Option Name="IPRepoPath" Val="$PPRDIR/../Single_Channel_ACF_AXI/Single_Channel_ACF_AXI_1.0"/>
     <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
     <Option Name="IPCachePermission" Val="read"/>
     <Option Name="IPCachePermission" Val="write"/>
@@ -38,7 +37,7 @@
     <Option Name="DSAVendor" Val="xilinx"/>
     <Option Name="DSABoardId" Val="zybo-z7-10"/>
     <Option Name="DSANumComputeUnits" Val="60"/>
-    <Option Name="WTXSimLaunchSim" Val="0"/>
+    <Option Name="WTXSimLaunchSim" Val="2"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -126,6 +125,13 @@
       </Config>
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1">
+      <File Path="$PPRDIR/../../../Downloads/singleChannelHardwareACF/singleChannelHardwareACF.srcs/sources_1/new/AXF_AXI_tb.v">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="Single_Channel_ACF_AXI_v1_0"/>

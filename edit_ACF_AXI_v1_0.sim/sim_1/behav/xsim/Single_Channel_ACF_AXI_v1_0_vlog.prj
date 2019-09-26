@@ -1,0 +1,21 @@
+# compile verilog/system verilog design source files
+verilog   \
+"../../../../ACF_AXI_1.0/hdl/ACF_AXI_v1_0.v" \
+"../../../../ACF_AXI_1.0/hdl/ACF_AXI_v1_0_S00_AXI.v" \
+
+verilog xil_defaultlib  \
+"../../../../ACF_AXI_1.0/src/TDC_DeltaT_1Chan.v" \
+
+sv xil_defaultlib  \
+"../../../../ACF_AXI_1.0/src/SingleChannelACF.sv" \
+"../../../../ACF_AXI_1.0/src/edgeDetector.sv" \
+"../../../../ACF_AXI_1.0/src/singleCFBlock.sv" \
+
+verilog xil_defaultlib  \
+"../../../../../../../Downloads/singleChannelHardwareACF/singleChannelHardwareACF.srcs/sources_1/new/AXF_AXI_tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
