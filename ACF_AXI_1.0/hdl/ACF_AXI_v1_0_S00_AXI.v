@@ -4,20 +4,19 @@
 	module ACF_AXI_v1_0_S00_AXI #
 	(
 		// Users to add parameters here
-
+        parameter integer NUM_BINS = 8,
 		// User parameters ends
 		// Do not modify the parameters beyond this line
 
 		// Width of S_AXI data bus
 		parameter integer C_S_AXI_DATA_WIDTH	= 32,
 		// Width of S_AXI address bus
-		parameter integer C_S_AXI_ADDR_WIDTH	= 4,
-		parameter integer NUM_BINS = 20
+		parameter integer C_S_AXI_ADDR_WIDTH	= 4
 	)
 	(
 		// Users to add ports here
-        input [NUM_BINS+33-1:0] acfEl,
-        input wrEn,
+        input wire [NUM_BINS+33-1:0] acfEl,
+        input wire wrEn,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -106,10 +105,10 @@
 	//-- Signals for user logic register space example
 	//------------------------------------------------
 	//-- Number of Slave Registers 4
-	wire [C_S_AXI_DATA_WIDTH-1:0]	slv_reg0;
-	wire [C_S_AXI_DATA_WIDTH-1:0]	slv_reg1;
-	wire [C_S_AXI_DATA_WIDTH-1:0]	slv_reg2;
-	wire [C_S_AXI_DATA_WIDTH-1:0]	slv_reg3;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg0;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg1;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg2;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg3;
 	wire	 slv_reg_rden;
 	wire	 slv_reg_wren;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	 reg_data_out;
@@ -218,6 +217,23 @@
 	// and the slave is ready to accept the write address and write data.
 	assign slv_reg_wren = axi_wready && S_AXI_WVALID && axi_awready && S_AXI_AWVALID;
 
+	always @( posedge S_AXI_ACLK )
+	begin
+	  if ( S_AXI_ARESETN == 1'b0 )
+	    begin
+	      slv_reg0 <= 0;
+	      slv_reg1 <= 0;
+	      slv_reg2 <= 0;
+	      slv_reg3 <= 0;
+	    end 
+//	  else begin
+//	    if (slv_reg_wren)
+//	      begin
+	        
+//	      end
+//	  end
+	end    
+
 	// Implement write response logic generation
 	// The write response and response valid signals are asserted by the slave 
 	// when axi_wready, S_AXI_WVALID, axi_wready and S_AXI_WVALID are asserted.  
@@ -266,9 +282,13 @@
 	      axi_araddr  <= 32'b0;
 	    end 
 	  else
-	    begin    
+	    begin
+	      $display("arready?");
+	      $display(~axi_arready);   
+	      $display(S_AXI_ARVALID);
 	      if (~axi_arready && S_AXI_ARVALID)
 	        begin
+	          $display("arready");
 	          // indicates that the slave has acceped the valid read address
 	          axi_arready <= 1'b1;
 	          // Read address latching
@@ -348,10 +368,12 @@
 	end    
 
 	// Add user logic here
-    assign slv_reg0 = acfEl[C_S_AXI_DATA_WIDTH-1: 0];
-    assign slv_reg1 = acfEl[2*C_S_AXI_DATA_WIDTH-1: C_S_AXI_DATA_WIDTH];
-    assign slv_reg2 = 0;
-    assign slv_reg3 = 0;
+    always @(posedge S_AXI_ACLK) begin
+        slv_reg0 <= acfEl[C_S_AXI_DATA_WIDTH-1:0];
+        slv_reg1 <= 0;
+        slv_reg2 <= 0;
+        slv_reg3 <= 0;
+    end
 	// User logic ends
 
 	endmodule

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ACF_AXI_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="ACF_AXI_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="86000001fs"></ZoomEndTime>
+      <Cursor1Time time="60100000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="186"></NameColumnWidth>
+      <ValueColumnWidth column_width="96"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="10" />
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/aclk">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/arstn">
+      <obj_property name="ElementShortName">arstn</obj_property>
+      <obj_property name="ObjectShortName">arstn</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/CE">
+      <obj_property name="ElementShortName">CE</obj_property>
+      <obj_property name="ObjectShortName">CE</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/CH_In">
+      <obj_property name="ElementShortName">CH_In</obj_property>
+      <obj_property name="ObjectShortName">CH_In</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/initTX">
+      <obj_property name="ElementShortName">initTX</obj_property>
+      <obj_property name="ObjectShortName">initTX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ACF_AXI_tb/presentTime">
+      <obj_property name="ElementShortName">presentTime[31:0]</obj_property>
+      <obj_property name="ObjectShortName">presentTime[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ACF_AXI_tb/DUT/ACF_AXI_v1_0_S00_AXI_inst/slv_reg0">
+      <obj_property name="ElementShortName">slv_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">slv_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ACF_AXI_tb/read_addr">
+      <obj_property name="ElementShortName">read_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ACF_AXI_tb/read_addr_valid">
+      <obj_property name="ElementShortName">read_addr_valid</obj_property>
+      <obj_property name="ObjectShortName">read_addr_valid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ACF_AXI_tb/read_data">
+      <obj_property name="ElementShortName">read_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">read_data[31:0]</obj_property>
+   </wvobject>
+</wave_config>

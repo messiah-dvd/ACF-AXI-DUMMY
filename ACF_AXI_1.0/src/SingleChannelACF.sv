@@ -22,7 +22,7 @@
 
 module SingleChannelACF #(parameter BIN_SIZE = 8,parameter NUM_BINS = 20,parameter CNTR_SIZE=32)(//defaults are for A735 FPGA
   //DELTA_T0 is expressed in units of 100 ns as is T_ACQ
-    input CLK,
+    input clk,
     input rst,
     input CE,
     input CH_In, //signal from SPCM
@@ -56,7 +56,7 @@ genvar i;
             assign cntWire = presentTime >> i;
             if (i==0)begin//use to be .UA_Depth(3+i)
                 singleCFBlock #(.BIN_SIZE(2*BIN_SIZE),.UA_DEPTH(i+UA_INTERCEPT),.CNTR_SIZE(CNTR_SIZE-i),.WORDSIZE(16),.ACF_WIDTH(i+ACA_INTERCEPT)) acfBlock (
-                                                .CLK(CLK),
+                                                .CLK(clk),
                                                 .RST(rst), 
                                                 .cnt(cntWire),
                                                 .risingEdge(risingEdge),
@@ -65,7 +65,7 @@ genvar i;
                                                 );
             end else begin //use to be .UA_DEPTH(3+i), .ACF_WIDTH(ACFWidth)
                 singleCFBlock #(.BIN_SIZE(2*BIN_SIZE),.UA_DEPTH(i+UA_INTERCEPT),.CNTR_SIZE(CNTR_SIZE-i),.WORDSIZE(16),.ACF_WIDTH(i+ACA_INTERCEPT)) acfBlock (
-                                            .CLK(CLK),
+                                            .CLK(clk),
                                             .RST(rst),
                                             .cnt(cntWire),
                                             .risingEdge(risingEdge),
@@ -79,7 +79,7 @@ endgenerate
 
 
 //Main block
-always @(posedge CLK) begin
+always @(posedge clk) begin
     if (rst) begin
         photonCount_d<=0;
         acfOut_d <= 0;
@@ -123,7 +123,7 @@ end //end always
 //Instantiate Edge Detector
 edgeDetector edgeDetect (
                     .async_sig(CH_In),
-                    .clk(CLK),
+                    .smpl_clk(clk),
                     .CE(CE),
                     .rise(risingEdge),
                     .fall() 
