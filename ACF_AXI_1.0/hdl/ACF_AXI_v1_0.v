@@ -4,7 +4,9 @@
 	module ACF_AXI_v1_0 #
 	(
 		// Users to add parameters here
-
+        parameter BIN_SIZE  = 8,
+        parameter NUM_BINS  = 20,
+        parameter CNTR_SIZE = 32,
 		// User parameters ends
 		// Do not modify the parameters beyond this line
 
@@ -15,7 +17,10 @@
 	)
 	(
 		// Users to add ports here
-
+        input wire CE,
+        input wire CH_In,
+        input wire initTX,
+        input wire [CNTR_SIZE-1:0] presentTime,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -43,11 +48,17 @@
 		output wire  s00_axi_rvalid,
 		input wire  s00_axi_rready
 	);
+	reg [NUM_BINS+33-1:0] acfEl = 0;
+    reg wrEn = 0;
+	
 // Instantiation of Axi Bus Interface S00_AXI
 	ACF_AXI_v1_0_S00_AXI # ( 
 		.C_S_AXI_DATA_WIDTH(C_S00_AXI_DATA_WIDTH),
-		.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
+		.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH),
+		.NUM_BINS(NUM_BINS)
 	) ACF_AXI_v1_0_S00_AXI_inst (
+	    .acfEl(acfEl),
+	    .wrEn(wrEn),
 		.S_AXI_ACLK(s00_axi_aclk),
 		.S_AXI_ARESETN(s00_axi_aresetn),
 		.S_AXI_AWADDR(s00_axi_awaddr),
@@ -72,7 +83,9 @@
 	);
 
 	// Add user logic here
-
+    always @(posedge s00_axi_aclk) begin
+        acfEl <= 8'h37 & {NUM_BINS+33{CE}};
+    end
 	// User logic ends
 
 	endmodule

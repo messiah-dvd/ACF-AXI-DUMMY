@@ -4,7 +4,7 @@
 	module ACF_AXI_v1_0_S00_AXI #
 	(
 		// Users to add parameters here
-
+        parameter integer NUM_BINS = 8,
 		// User parameters ends
 		// Do not modify the parameters beyond this line
 
@@ -15,7 +15,8 @@
 	)
 	(
 		// Users to add ports here
-
+        input wire [NUM_BINS+33-1:0] acfEl,
+        input wire wrEn,
 		// User ports ends
 		// Do not modify the ports beyond this line
 
@@ -225,47 +226,12 @@
 	      slv_reg2 <= 0;
 	      slv_reg3 <= 0;
 	    end 
-	  else begin
-	    if (slv_reg_wren)
-	      begin
-	        case ( axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-	          2'h0:
-	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
-	                // Slave register 0
-	                slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          2'h1:
-	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
-	                // Slave register 1
-	                slv_reg1[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          2'h2:
-	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
-	                // Slave register 2
-	                slv_reg2[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          2'h3:
-	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
-	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
-	                // Respective byte enables are asserted as per write strobes 
-	                // Slave register 3
-	                slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
-	          default : begin
-	                      slv_reg0 <= slv_reg0;
-	                      slv_reg1 <= slv_reg1;
-	                      slv_reg2 <= slv_reg2;
-	                      slv_reg3 <= slv_reg3;
-	                    end
-	        endcase
-	      end
-	  end
+//	  else begin
+//	    if (slv_reg_wren)
+//	      begin
+	        
+//	      end
+//	  end
 	end    
 
 	// Implement write response logic generation
@@ -316,9 +282,13 @@
 	      axi_araddr  <= 32'b0;
 	    end 
 	  else
-	    begin    
+	    begin
+	      $display("arready?");
+	      $display(~axi_arready);   
+	      $display(S_AXI_ARVALID);
 	      if (~axi_arready && S_AXI_ARVALID)
 	        begin
+	          $display("arready");
 	          // indicates that the slave has acceped the valid read address
 	          axi_arready <= 1'b1;
 	          // Read address latching
@@ -398,7 +368,12 @@
 	end    
 
 	// Add user logic here
-
+    always @(posedge S_AXI_ACLK) begin
+        slv_reg0 <= acfEl[C_S_AXI_DATA_WIDTH-1:0];
+        slv_reg1 <= 0;
+        slv_reg2 <= 0;
+        slv_reg3 <= 0;
+    end
 	// User logic ends
 
 	endmodule
